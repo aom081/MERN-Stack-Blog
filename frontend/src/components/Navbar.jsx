@@ -14,10 +14,7 @@ const Navbar = () => {
         SE NPRU Blog
       </Link>
       <div className="flex gap-3">
-        <Link
-          to="/posts/new"
-          className="btn btn-primary btn-sm"
-        >
+        <Link to="/posts/new" className="btn btn-primary btn-sm">
           New Post
         </Link>
         <Link
