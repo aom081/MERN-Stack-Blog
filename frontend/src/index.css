@@ -1,2 +1,38 @@
 @import "tailwindcss";
 @plugin "daisyui";
+
+/* Global site background using ED79DD with dimensional gradients */
+.site-background {
+  /* Base color */
+  --bg-base: #ed79dd;
+  /* Slightly darker and lighter tints for depth */
+  --bg-dark: #d462c7;
+  --bg-light: #f29eea;
+
+  min-height: 100vh;
+  /* Layered gradients for soft depth */
+  background-image: radial-gradient(
+      1200px 600px at 10% 0%,
+      var(--bg-light) 0%,
+      transparent 60%
+    ),
+    radial-gradient(800px 400px at 90% 15%, var(--bg-dark) 0%, transparent 65%),
+    radial-gradient(600px 300px at 30% 90%, var(--bg-light) 0%, transparent 70%),
+    linear-gradient(180deg, var(--bg-base), var(--bg-dark));
+  background-color: var(--bg-base);
+  background-attachment: fixed;
+}
+
+/* Optional subtle texture for more dimension */
+.site-background::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  background-image: radial-gradient(
+    rgba(255, 255, 255, 0.08) 1px,
+    transparent 1px
+  );
+  background-size: 3px 3px;
+  mix-blend-mode: soft-light;
+}
