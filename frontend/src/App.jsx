@@ -28,7 +28,7 @@ function App() {
           summary="Practical patterns to speed up your UI work."
           content="Learn how to compose utility classes and leverage components to ship polished UIs quickly."
           author="Jane Doe"
-          imageUrl="https://images.unsplash.com/photo-1547658719-0011b9b636b2?w=800&auto=format&fit=crop&q=60"
+          imageUrl="https://images.unsplash.com/photo-1505238687151-1c3b93f99bcd?w=800&auto=format&fit=crop&q=60"
           date={new Date().toISOString()}
         />
         <PostCard
