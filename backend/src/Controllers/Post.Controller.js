@@ -54,7 +54,7 @@ export async function getPostById(req, res) {
     if (!post) {
       return res.status(404).json({ message: "Post not found" });
     }
-    return res.status(200).json(post);
+   res.json(post);
   } catch (error) {
     console.error(error);
     return res.status(500).json({ message: "Server error" });
@@ -88,6 +88,25 @@ export async function deletePost(req, res) {
       return res.status(404).json({ message: "Post not found" });
     }
     return res.status(200).json({ message: "Post deleted successfully" });
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({ message: "Server error" });
+  }
+}
+
+export async function getPostsByAuthor(req, res) {
+  const { authorId } = req.params;
+  if (!authorId) {
+    return res.status(400).json({ message: "Author ID is required" });
+  }
+  try {
+    const posts = await PostModel.find({ author: authorId })
+      .populate("author", "username")
+      .sort({ createdAt: -1 });
+    if (!posts || posts.length === 0) {
+      return res.status(404).json({ message: "No posts found for this author" });
+    }
+    res.json(posts);
   } catch (error) {
     console.error(error);
     return res.status(500).json({ message: "Server error" });
