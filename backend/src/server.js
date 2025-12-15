@@ -3,6 +3,7 @@ import cors from "cors";
 import dotenv from "dotenv";
 import { connectDB } from "./utils/db.js";
 import UserRouter from "./routes/User.router.js";
+import PostRouter from "./routes/Post.router.js";
 import mongoose from "mongoose";
 
 dotenv.config();
@@ -21,7 +22,8 @@ app.get("/", (req, res) => {
 });
 
 // Mount user routes
-app.use("/api/v1/", UserRouter);
+app.use("/api/v1/user", UserRouter);
+app.use("/api/v1/post", PostRouter);
 
 if (!MONGO_URI) {
   console.error("MONGO_URI is not defined in environment variables.");

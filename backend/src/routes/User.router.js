@@ -1,4 +1,5 @@
 import express from "express";
+import { Router } from "express";
 import { register, login } from "../Controllers/User.Controller.js";
 
 const router = express.Router();
@@ -6,5 +7,7 @@ const router = express.Router();
 router.post("/register", register);
 //http://localhost:5000/api/v1/user/login
 router.post("/login", login);
+
+
 
 export default router;
