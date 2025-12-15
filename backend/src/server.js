@@ -2,7 +2,7 @@ import express from "express";
 import cors from "cors";
 import dotenv from "dotenv";
 import { connectDB } from "./utils/db.js";
-import authRouter from "./routes/auth.routes.js";
+import UserRouter from "./routes/User.router.js";
 import mongoose from "mongoose";
 
 dotenv.config();
@@ -20,7 +20,10 @@ app.get("/", (req, res) => {
   res.send("Welcome to the SE NPRU Blog API");
 });
 
-if(!MONGO_URI){
+// Mount user routes
+app.use("/api/v1/", UserRouter);
+
+if (!MONGO_URI) {
   console.error("MONGO_URI is not defined in environment variables.");
 } else {
   connectDB(MONGO_URI)
@@ -28,8 +31,8 @@ if(!MONGO_URI){
     .catch((err) => {
       console.error("Failed to connect to MongoDB:", err);
     });
-  }
+}
 
 app.listen(PORT, () => {
-  console.log(`API server listening on port ${PORT}`);
+  console.log(`API server listening on port http://localhost:${PORT}`);
 });

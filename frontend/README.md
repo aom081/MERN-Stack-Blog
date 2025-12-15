@@ -16,3 +16,39 @@ Note: This will impact Vite dev & build performances.
 ## Expanding the ESLint configuration
 
 If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+
+---
+
+## Backend API Quick Test
+
+The backend mounts user endpoints at `/api/v1/user`.
+
+Windows CMD (escape JSON quotes):
+
+```
+curl -X POST http://localhost:5000/api/v1/user/register -H "Content-Type: application/json" -d "{\"username\":\"alice\",\"password\":\"secret123\"}"
+
+curl -X POST http://localhost:5000/api/v1/user/login -H "Content-Type: application/json" -d "{\"username\":\"alice\",\"password\":\"secret123\"}"
+```
+
+POSIX shells (macOS/Linux/Git Bash):
+
+```
+curl -X POST http://localhost:5000/api/v1/user/register -H 'Content-Type: application/json' -d '{"username":"alice","password":"secret123"}'
+
+curl -X POST http://localhost:5000/api/v1/user/login -H 'Content-Type: application/json' -d '{"username":"alice","password":"secret123"}'
+```
+
+## Frontend Environment
+
+Add `VITE_API_URL` in the frontend `.env`:
+
+```
+VITE_API_URL=http://localhost:5000/api/v1
+```
+
+Then call endpoints like:
+
+```
+fetch(`${import.meta.env.VITE_API_URL}/user/login`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ username, password }) })
+```
