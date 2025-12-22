@@ -1,15 +1,20 @@
-import React, { useState, useContext } from "react";
+import React, { useState, useContext, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
 import { UserContext } from "../Context/UserContext.jsx";
 const Login = () => {
   const [form, setForm] = useState({ username: "", password: "" });
-  const { setUserInfo } = useContext(UserContext);
+  const { userInfo, login } = useContext(UserContext);
+  const navigate = useNavigate();
+  useEffect(() => {
+    if (userInfo) {
+      navigate("/");
+    }
+  }, [userInfo, navigate]);
   const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
   const [loading, setLoading] = useState(false);
-  const navigate = useNavigate();
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -50,7 +55,7 @@ const Login = () => {
       // TODO: POST to `/api/auth/login` when backend is ready
       await new Promise((res) => setTimeout(res, 600));
       // Demo: mark user as logged in in context
-      setUserInfo({ username: form.username });
+      login({ username: form.username });
       setSuccess("Logged in successfully (demo). Wire API next.");
       setForm({ username: "", password: "" });
       await Swal.fire({

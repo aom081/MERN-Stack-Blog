@@ -1,14 +1,22 @@
-import React, { useState } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
+import { UserContext } from "../Context/UserContext.jsx";
 
 const Register = () => {
   const [form, setForm] = useState({ username: "", password: "" });
+  const navigate = useNavigate();
+  const {userInfo } = useContext(UserContext);
+  useEffect(() => {
+    if (userInfo) {
+      navigate("/");
+    }
+  }, [userInfo, navigate]);
   const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
   const [loading, setLoading] = useState(false);
-  const navigate = useNavigate();
+
 
   const handleChange = (e) => {
     const { name, value } = e.target;
