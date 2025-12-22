@@ -2,6 +2,7 @@ import React, { useState, useContext, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
 import { UserContext } from "../Context/UserContext.jsx";
+import authService from "../server/auth";
 const Login = () => {
   const [form, setForm] = useState({ username: "", password: "" });
   const { userInfo, login } = useContext(UserContext);
@@ -52,11 +53,11 @@ const Login = () => {
     }
     try {
       setLoading(true);
-      // TODO: POST to `/api/auth/login` when backend is ready
-      await new Promise((res) => setTimeout(res, 600));
-      // Demo: mark user as logged in in context
-      login({ username: form.username });
-      setSuccess("Logged in successfully (demo). Wire API next.");
+      // Call real backend login
+      const data = await authService.login(form.username, form.password);
+      // Update context with full user payload (contains accessToken)
+      login(data);
+      setSuccess("Logged in successfully.");
       setForm({ username: "", password: "" });
       await Swal.fire({
         icon: "success",

@@ -7,8 +7,15 @@ const getToken = () => {
 };
 
 const getUser = () => {
-  const user = cookies.get("user");
-  return user || null;
+  const stored = cookies.get("user");
+  if (!stored) return null;
+  // Handle both plain object (if react-cookie parsed it) and JSON string
+  if (typeof stored === "object") return stored;
+  try {
+    return JSON.parse(stored);
+  } catch {
+    return null;
+  }
 };
 
 const removeUser = () => {
@@ -20,7 +27,7 @@ const setUser = (user) => {
     "user",
     JSON.stringify({
       id: user?.id,
-      Username: user?.Username,
+      username: user?.username,
       accessToken: user?.accessToken,
     })
   );

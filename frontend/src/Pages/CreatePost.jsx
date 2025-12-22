@@ -1,4 +1,6 @@
 import React, { useState, useRef } from "react";
+import postService from "../server/Post.server";
+import Swal from "sweetalert2";
 
 const CreatePost = () => {
   const [title, setTitle] = useState("");
@@ -32,33 +34,44 @@ const CreatePost = () => {
     reader.readAsDataURL(file);
   };
 
-  const onSubmit = (ev) => {
+  const onSubmit = async (ev) => {
     ev.preventDefault();
     if (!validate()) return;
 
-    // Frontend-only: assemble payload. Replace with API call when backend is ready.
     const formData = new FormData();
     formData.append("title", title.trim());
     formData.append("summary", summary.trim());
     formData.append("content", content.trim());
     formData.append("image", imageFile);
 
-    console.log("CreatePost payload (FormData):", {
-      title,
-      summary,
-      content,
-      imageFileName: imageFile?.name,
-    });
-
-    // Reset form (simulate success)
-    setTitle("");
-    setSummary("");
-    setContent("");
-    setImageFile(null);
-    setImagePreview(null);
-    setErrors({});
-    if (fileInputRef.current) fileInputRef.current.value = "";
-    alert("Post prepared in frontend (no API call yet).");
+    try {
+      await postService.createPost(formData);
+      // Reset form on success
+      setTitle("");
+      setSummary("");
+      setContent("");
+      setImageFile(null);
+      setImagePreview(null);
+      setErrors({});
+      if (fileInputRef.current) fileInputRef.current.value = "";
+      await Swal.fire({
+        icon: "success",
+        title: "Post created",
+        text: "Your post has been published successfully.",
+      });
+    } catch (err) {
+      console.error("Failed to create post", err);
+      const status = err?.response?.status;
+      const message =
+        status === 401
+          ? "You must be logged in to create a post."
+          : "Failed to create post. Please try again.";
+      await Swal.fire({
+        icon: "error",
+        title: "Error",
+        text: message,
+      });
+    }
   };
 
   return (

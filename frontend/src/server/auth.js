@@ -2,13 +2,13 @@ import api from "./api";
 import tokenService from "./token.service";
 const API_URL = import.meta.env.VITE_API_URL || "http://localhost:5000/api/v1";
 
-const register = (Username, password) => {
-  return api.post(`${API_URL}/user/register`, { Username, password });
+const register = (username, password) => {
+  return api.post(`${API_URL}/user/register`, { username, password });
 };
 
-const login = async (Username, password) => {
+const login = async (username, password) => {
   const response = await api.post(`${API_URL}/user/login`, {
-    Username,
+    username,
     password,
   });
   const { status, data } = response;
