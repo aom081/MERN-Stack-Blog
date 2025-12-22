@@ -1,15 +1,16 @@
-import React from "react";
+import React, { useContext } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import tokenService from "../server/token.service";
 import authService from "../server/auth";
+import { UserContext } from "../Context/UserContext.jsx";
 
 const Navbar = () => {
+  const { userInfo, setUserInfo } = useContext(UserContext);
   const navigate = useNavigate();
-  const user = tokenService.getUser();
-  const isAuthenticated = !!user;
+  const isAuthenticated = !!userInfo;
 
   const handleLogout = () => {
     authService.logout();
+    setUserInfo(null);
     navigate("/login");
   };
 

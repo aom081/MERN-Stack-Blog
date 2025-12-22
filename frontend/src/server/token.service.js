@@ -19,9 +19,9 @@ const setUser = (user) => {
   cookies.set(
     "user",
     JSON.stringify({
-      id: user.id,
-      Username: user.Username,
-      accessToken: user.accessToken,
+      id: user?.id,
+      Username: user?.Username,
+      accessToken: user?.accessToken,
     })
   );
 };
