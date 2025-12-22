@@ -1,4 +1,6 @@
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import Swal from "sweetalert2";
 
 const Register = () => {
   const [form, setForm] = useState({ username: "", password: "" });
@@ -6,10 +8,11 @@ const Register = () => {
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
   const [loading, setLoading] = useState(false);
+  const navigate = useNavigate();
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setForm((prev) => ({ ...prev, [name]: value }));
+    setForm((user) => ({ ...user, [name]: value }));
     setError("");
     setSuccess("");
   };
@@ -29,22 +32,33 @@ const Register = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setError("");
-    setSuccess("");
+
     const validationError = validate();
     if (validationError) {
       setError(validationError);
+      await Swal.fire({
+        icon: "error",
+        title: "Error",
+        text: validationError,
+      });
       return;
     }
-    // Placeholder submit action; wire to backend later
+
     try {
       setLoading(true);
-      // TODO: POST to `/api/auth/register` when backend is ready
-      await new Promise((res) => setTimeout(res, 600));
-      setSuccess("Registered successfully (demo). Wire API next.");
+
+      // TODO: replace this with real API call
+      await Swal.fire({
+        icon: "success",
+        title: "Registered",
+        text: "Account created successfully",
+      });
+
+      setSuccess("Account created successfully");
       setForm({ username: "", password: "" });
+      navigate("/login");
     } catch {
-      setError("Registration failed. Please try again.");
+      setError("Something went wrong. Please try again.");
     } finally {
       setLoading(false);
     }

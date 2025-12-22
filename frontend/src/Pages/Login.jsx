@@ -1,4 +1,6 @@
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import Swal from "sweetalert2";
 
 const Login = () => {
   const [form, setForm] = useState({ username: "", password: "" });
@@ -6,6 +8,7 @@ const Login = () => {
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
   const [loading, setLoading] = useState(false);
+  const navigate = useNavigate();
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -34,6 +37,11 @@ const Login = () => {
     const validationError = validate();
     if (validationError) {
       setError(validationError);
+      await Swal.fire({
+        icon: "error",
+        title: "Error",
+        text: validationError,
+      });
       return;
     }
     try {
@@ -42,6 +50,12 @@ const Login = () => {
       await new Promise((res) => setTimeout(res, 600));
       setSuccess("Logged in successfully (demo). Wire API next.");
       setForm({ username: "", password: "" });
+      await Swal.fire({
+        icon: "success",
+        title: "Logged in",
+        text: "Logged in successfully",
+      });
+      navigate("/");
     } catch {
       setError("Login failed. Please try again.");
     } finally {
